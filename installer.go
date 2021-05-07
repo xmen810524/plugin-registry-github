@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
 	"path/filepath"
 	"sync"
 
@@ -49,8 +48,6 @@ type Option func(i *Installer)
 type Installer struct {
 	fs      afero.Fs
 	service RepositoryService
-
-	baseURL *url.URL
 
 	mu sync.Mutex
 }
@@ -205,20 +202,10 @@ func NewInstaller(fs afero.Fs, options ...Option) *Installer {
 	}
 
 	if i.service == nil {
-		c := github.NewClient(nil)
-		c.BaseURL = i.baseURL
-
-		i.service = c.Repositories
+		i.service = github.NewClient(nil).Repositories
 	}
 
 	return i
-}
-
-// WithBaseURL sets the base url for github client.
-func WithBaseURL(url *url.URL) Option {
-	return func(i *Installer) {
-		i.baseURL = url
-	}
 }
 
 // WithService sets the repository service.

@@ -106,6 +106,19 @@ func TestInstaller_Install(t *testing.T) {
 			expectedError: "could not load plugin metadata: EOF",
 		},
 		{
+			scenario: "could not find artifact (no artifact)",
+			source:   "github.com/owner/my-plugin@v1.4.2",
+			mockService: service.MockRepositoryService(func(s *service.RepositoryService) {
+				s.On("GetReleaseByTag", mock.Anything, "owner", "my-plugin", "v1.4.2").
+					Return(newRelease("v1.4.2"), nil, nil)
+
+				s.On("DownloadContents", mock.Anything, "owner", "my-plugin", ".plugin.registry.yaml",
+					&goGitHub.RepositoryContentGetOptions{Ref: "v1.4.2"}).
+					Return(newMetadataFile("resources/fixtures/.plugin.registry.yaml"), nil, nil)
+			}),
+			expectedError: "could not find artifact: artifact not found",
+		},
+		{
 			scenario: "could not find artifact",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockService: service.MockRepositoryService(func(s *service.RepositoryService) {
