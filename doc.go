@@ -1,2 +1,2 @@
-// Package main
-package main
+// Package github provides Installer plugin installer.
+package github
