@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
 	goGitHub "github.com/google/go-github/v35/github"
+	"github.com/nhatthm/aferoassert"
 	"github.com/nhatthm/httpmock"
 	github "github.com/nhatthm/plugin-registry-github"
 	fsCtx "github.com/nhatthm/plugin-registry/context"
@@ -255,16 +255,48 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 
 			file := filepath.Join(dest, result.Name, result.Name)
 
-			info, err := osFs.Stat(file)
-			require.NoError(t, err)
-			assert.Equal(t, os.FileMode(0755), info.Mode())
-
-			data, err := afero.ReadFile(osFs, file)
-			require.NoError(t, err)
-
-			expected := "#!/bin/bash\n"
-
-			assert.Equal(t, expected, string(data))
+			aferoassert.Perm(t, osFs, file, 0755)
+			aferoassert.FileContent(t, osFs, file, "#!/bin/bash\n")
 		})
 	}
+}
+
+func TestWithBaseURL(t *testing.T) {
+	t.Parallel()
+
+	osFs := afero.NewOsFs()
+	svr := httpmock.New(
+		mockServerRelease("v1.4.2", "resources/fixtures/binary/my-plugin", "application/octet-stream"),
+	)(t)
+
+	u, err := url.Parse(strings.TrimSuffix(svr.URL(), "/") + "/")
+	require.NoError(t, err)
+
+	dest := t.TempDir()
+	source := "github.com/owner/my-plugin@v1.4.2"
+
+	i := github.NewInstaller(github.WithBaseURL(u))
+
+	result, err := i.Install(context.Background(), dest, source)
+	require.NoError(t, err)
+
+	expectedResult := &plugin.Plugin{
+		Name:    "my-plugin",
+		URL:     "https://github.com/owner/my-plugin",
+		Version: "1.4.2",
+		Enabled: false,
+		Hidden:  true,
+		Artifacts: plugin.Artifacts{
+			plugin.RuntimeArtifactIdentifier(): {
+				File: "my-plugin",
+			},
+		},
+	}
+
+	assert.Equal(t, expectedResult, result)
+
+	file := filepath.Join(dest, result.Name, result.Name)
+
+	aferoassert.Perm(t, osFs, file, 0755)
+	aferoassert.FileContent(t, osFs, file, "#!/bin/bash\n")
 }

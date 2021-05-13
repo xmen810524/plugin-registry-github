@@ -453,7 +453,10 @@ artifacts:
 				tc.mockService = service.NoMockRepositoryService
 			}
 
-			c := github.NewInstaller(tc.mockFs(t), github.WithService(tc.mockService(t)))
+			c := github.NewInstaller(
+				github.WithFs(tc.mockFs(t)),
+				github.WithService(tc.mockService(t)),
+			)
 			result, err := c.Install(context.Background(), "/tmp", tc.source)
 
 			assert.Equal(t, tc.expectedResult, result)

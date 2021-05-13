@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/bool64/ctxd v0.1.4
 	github.com/google/go-github/v35 v35.1.0
+	github.com/nhatthm/aferoassert v0.1.5
 	github.com/nhatthm/aferomock v0.3.0
 	github.com/nhatthm/httpmock v0.6.3
 	github.com/nhatthm/plugin-registry v0.1.2

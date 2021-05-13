@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"path/filepath"
 	"sync"
 
@@ -41,6 +42,8 @@ type Option func(i *Installer)
 type Installer struct {
 	fs      afero.Fs
 	service RepositoryService
+
+	baseURL *url.URL
 
 	mu sync.Mutex
 }
@@ -185,9 +188,9 @@ func (i *Installer) WithService(service RepositoryService) *Installer {
 }
 
 // NewInstaller initiates a new github installer.
-func NewInstaller(fs afero.Fs, options ...Option) *Installer {
+func NewInstaller(options ...Option) *Installer {
 	i := &Installer{
-		fs: fs,
+		fs: afero.NewOsFs(),
 	}
 
 	for _, o := range options {
@@ -195,16 +198,36 @@ func NewInstaller(fs afero.Fs, options ...Option) *Installer {
 	}
 
 	if i.service == nil {
-		i.service = github.NewClient(nil).Repositories
+		c := github.NewClient(nil)
+
+		if i.baseURL != nil {
+			c.BaseURL = i.baseURL
+		}
+
+		i.service = c.Repositories
 	}
 
 	return i
+}
+
+// WithFs sets the file system.
+func WithFs(fs afero.Fs) Option {
+	return func(i *Installer) {
+		i.fs = fs
+	}
 }
 
 // WithService sets the repository service.
 func WithService(service RepositoryService) Option {
 	return func(i *Installer) {
 		i.WithService(service)
+	}
+}
+
+// WithBaseURL sets the github base url.
+func WithBaseURL(url *url.URL) Option {
+	return func(i *Installer) {
+		i.baseURL = url
 	}
 }
 
@@ -215,7 +238,7 @@ func RegisterInstaller(options ...Option) {
 			return isPlugin(pluginURL)
 		},
 		func(fs afero.Fs) installer.Installer {
-			return NewInstaller(fs, options...)
+			return NewInstaller(append(options, WithFs(fs))...)
 		},
 	)
 }
