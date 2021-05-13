@@ -29,14 +29,7 @@ var (
 )
 
 func init() { // nolint: gochecknoinits
-	installer.Register(githubHostname,
-		func(ctx context.Context, pluginURL string) bool {
-			return isPlugin(pluginURL)
-		},
-		func(fs afero.Fs) installer.Installer {
-			return NewInstaller(fs)
-		},
-	)
+	RegisterInstaller()
 }
 
 type contextKey string
@@ -213,4 +206,16 @@ func WithService(service RepositoryService) Option {
 	return func(i *Installer) {
 		i.WithService(service)
 	}
+}
+
+// RegisterInstaller registers the installer.
+func RegisterInstaller(options ...Option) {
+	installer.Register(githubHostname,
+		func(ctx context.Context, pluginURL string) bool {
+			return isPlugin(pluginURL)
+		},
+		func(fs afero.Fs) installer.Installer {
+			return NewInstaller(fs, options...)
+		},
+	)
 }
