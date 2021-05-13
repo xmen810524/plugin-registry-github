@@ -23,8 +23,9 @@ go get github.com/nhatthm/plugin-registry-github
 
 Import the library while bootstrapping the application (see the [examples](#examples))
 
-The installer supports this source format: `[https?://]github.com/owner/repository[@version]`. For examples:
+The installer supports this source format: `[https?://][www.]github.com/owner/repository[@version]`. For examples:
 - `https://github.com/owner/repository`
+- `https://www.github.com/owner/repository`
 - `github.com/owner/repository@latest`
 - `github.com/owner/repository@v1.4.2`
 
