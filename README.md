@@ -11,7 +11,7 @@ An installer for [plugin-registry](https://github.com/nhatthm/plugin-registry)
 
 ## Prerequisites
 
-- `Go >= 1.15`
+- `Go >= 1.16`
 
 ## Install
 
@@ -29,7 +29,7 @@ The installer supports this source format: `[https?://][www.]github.com/owner/re
 - `github.com/owner/repository@latest`
 - `github.com/owner/repository@v1.4.2`
 
-In the root folder of the repository, there must be a `.plugin.registry.yaml` file that describe the plugin. 
+In the root folder of the repository, there must be a `.plugin.registry.yaml` file that describe the plugin.
 For example: https://github.com/nhatthm/moneylovercli-plugin-n26/blob/master/.plugin.registry.yaml
 
 ## Examples

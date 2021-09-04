@@ -16,7 +16,7 @@ import (
 var ErrArtifactNotFound = errors.New("artifact not found")
 
 func writeFile(fs afero.Fs, path string, r io.Reader) error {
-	f, err := fs.OpenFile(path, os.O_CREATE|os.O_RDWR, os.FileMode(0644))
+	f, err := fs.OpenFile(path, os.O_CREATE|os.O_RDWR, os.FileMode(0o644))
 	if err != nil {
 		return err
 	}

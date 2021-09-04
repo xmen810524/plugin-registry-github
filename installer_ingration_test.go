@@ -12,7 +12,6 @@ import (
 	goGitHub "github.com/google/go-github/v35/github"
 	"github.com/nhatthm/aferoassert"
 	"github.com/nhatthm/httpmock"
-	github "github.com/nhatthm/plugin-registry-github"
 	fsCtx "github.com/nhatthm/plugin-registry/context"
 	"github.com/nhatthm/plugin-registry/installer"
 	"github.com/nhatthm/plugin-registry/plugin"
@@ -20,6 +19,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
+
+	github "github.com/nhatthm/plugin-registry-github"
 )
 
 func newRepositoryService(baseURL string) github.RepositoryService {
@@ -105,6 +106,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin.zip",
@@ -121,6 +123,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin-no-parent.zip",
@@ -137,6 +140,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin.tar.gz",
@@ -153,6 +157,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin-no-parent.gz",
@@ -169,6 +174,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin",
@@ -186,6 +192,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin",
@@ -203,6 +210,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin",
@@ -220,6 +228,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 				Version: "1.4.2",
 				Enabled: false,
 				Hidden:  true,
+				Tags:    plugin.Tags{},
 				Artifacts: plugin.Artifacts{
 					plugin.RuntimeArtifactIdentifier(): {
 						File: "my-plugin",
@@ -255,7 +264,7 @@ func TestIntegrationInstaller_Install(t *testing.T) {
 
 			file := filepath.Join(dest, result.Name, result.Name)
 
-			aferoassert.Perm(t, osFs, file, 0755)
+			aferoassert.Perm(t, osFs, file, 0o755)
 			aferoassert.FileContent(t, osFs, file, "#!/bin/bash\n")
 		})
 	}
@@ -286,6 +295,7 @@ func TestWithBaseURL(t *testing.T) {
 		Version: "1.4.2",
 		Enabled: false,
 		Hidden:  true,
+		Tags:    plugin.Tags{},
 		Artifacts: plugin.Artifacts{
 			plugin.RuntimeArtifactIdentifier(): {
 				File: "my-plugin",
@@ -297,6 +307,6 @@ func TestWithBaseURL(t *testing.T) {
 
 	file := filepath.Join(dest, result.Name, result.Name)
 
-	aferoassert.Perm(t, osFs, file, 0755)
+	aferoassert.Perm(t, osFs, file, 0o755)
 	aferoassert.FileContent(t, osFs, file, "#!/bin/bash\n")
 }

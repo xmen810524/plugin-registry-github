@@ -11,13 +11,14 @@ import (
 
 	goGitHub "github.com/google/go-github/v35/github"
 	"github.com/nhatthm/aferomock"
-	github "github.com/nhatthm/plugin-registry-github"
-	"github.com/nhatthm/plugin-registry-github/mock/service"
 	"github.com/nhatthm/plugin-registry/installer"
 	"github.com/nhatthm/plugin-registry/plugin"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+
+	github "github.com/nhatthm/plugin-registry-github"
+	"github.com/nhatthm/plugin-registry-github/mock/service"
 )
 
 func TestInstaller_Install(t *testing.T) {
@@ -153,7 +154,7 @@ func TestInstaller_Install(t *testing.T) {
 			scenario: "could not create temp dir",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(errors.New("mkdir error"))
 			}),
 			mockService: service.MockRepositoryService(func(s *service.RepositoryService) {
@@ -175,12 +176,12 @@ func TestInstaller_Install(t *testing.T) {
 			scenario: "could not write artifact (open error)",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(nil)
 
 				fs.On("OpenFile",
 					expectFileNamef("my-plugin-1.4.2-%s-%s.tar.gz", runtime.GOOS, runtime.GOARCH),
-					os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(nil, errors.New("open error"))
 
 				fs.On("RemoveAll", mock.Anything).Return(nil)
@@ -204,12 +205,12 @@ func TestInstaller_Install(t *testing.T) {
 			scenario: "could not write artifact (copy error)",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(nil)
 
 				fs.On("OpenFile",
 					expectFileNamef("my-plugin-1.4.2-%s-%s.tar.gz", runtime.GOOS, runtime.GOARCH),
-					os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile("my-plugin.tar.gz"), nil)
 
 				fs.On("RemoveAll", mock.Anything).Return(nil)
@@ -236,17 +237,17 @@ func TestInstaller_Install(t *testing.T) {
 			scenario: "could not chmod artifact",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(nil)
 
 				fs.On("OpenFile",
 					expectFileNamef("my-plugin-1.4.2-%s-%s.tar.gz", runtime.GOOS, runtime.GOARCH),
-					os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile("my-plugin.tar.gz"), nil)
 
 				fs.On("Chmod",
 					expectFileNamef("my-plugin-1.4.2-%s-%s.tar.gz", runtime.GOOS, runtime.GOARCH),
-					os.FileMode(0755)).
+					os.FileMode(0o755)).
 					Return(errors.New("chmod error"))
 
 				fs.On("RemoveAll", mock.Anything).Return(nil)
@@ -271,19 +272,19 @@ func TestInstaller_Install(t *testing.T) {
 			scenario: "could not write plugin metadata",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(nil)
 
 				fs.On("OpenFile",
 					expectFileNamef("my-plugin-1.4.2-%s-%s.tar.gz", runtime.GOOS, runtime.GOARCH),
-					os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile("my-plugin.tar.gz"), nil)
 
 				metadataFile := newEmptyFile(".plugin.registry.yaml")
 				_ = metadataFile.Close() // nolint: errcheck
 
 				fs.On("OpenFile",
-					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(metadataFile, nil)
 
 				fs.On("RemoveAll", mock.Anything).Return(nil)
@@ -307,15 +308,15 @@ func TestInstaller_Install(t *testing.T) {
 			scenario: "could not find installer because no installer supports 7z",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(nil)
 
 				fs.On("OpenFile",
-					expectFileName("my-plugin.7z"), os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					expectFileName("my-plugin.7z"), os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile("my-plugin.7z"), nil)
 
 				fs.On("OpenFile",
-					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile(".plugin.registry.yaml"), nil)
 
 				fs.On("Stat", expectFileName("my-plugin.7z")).
@@ -352,15 +353,15 @@ artifacts:
 			scenario: "could not install",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(nil)
 
 				fs.On("OpenFile",
-					expectFileName("my-plugin.fail"), os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					expectFileName("my-plugin.fail"), os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile("my-plugin.fail"), nil)
 
 				fs.On("OpenFile",
-					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile(".plugin.registry.yaml"), nil)
 
 				fs.On("Stat", expectFileName("my-plugin.fail")).Maybe().
@@ -397,15 +398,15 @@ artifacts:
 			scenario: "success",
 			source:   "github.com/owner/my-plugin@v1.4.2",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Mkdir", mock.Anything, os.FileMode(0700)).
+				fs.On("Mkdir", mock.Anything, os.FileMode(0o700)).
 					Return(nil)
 
 				fs.On("OpenFile",
-					expectFileName("my-plugin.success"), os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					expectFileName("my-plugin.success"), os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile("my-plugin.success"), nil)
 
 				fs.On("OpenFile",
-					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0644)).
+					expectFileName(".plugin.registry.yaml"), os.O_CREATE|os.O_RDWR, os.FileMode(0o644)).
 					Return(newEmptyFile(".plugin.registry.yaml"), nil)
 
 				fs.On("Stat", expectFileName("my-plugin.success")).Maybe().

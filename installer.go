@@ -154,7 +154,7 @@ func (i *Installer) installPluginReleaseAsset(
 		return nil, ctxd.WrapError(ctx, err, "could not write artifact")
 	}
 
-	if err := chmod(i.fs, asset.ContentType, assetFile, 0755); err != nil {
+	if err := chmod(i.fs, asset.ContentType, assetFile, 0o755); err != nil {
 		return nil, ctxd.WrapError(ctx, err, "could not chmod artifact")
 	}
 
