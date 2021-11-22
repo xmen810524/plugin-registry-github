@@ -70,7 +70,7 @@ func mockServerAssets(file string) func(s *httpmock.Server) {
 			})
 
 		s.ExpectGet("/owner/my-plugin/v1.4.2/.plugin.registry.yaml").
-			WithHandler(func(*http.Request) ([]byte, error) {
+			Run(func(*http.Request) ([]byte, error) {
 				return yaml.Marshal(plugin.Plugin{
 					Name:   "my-plugin",
 					Hidden: true,
