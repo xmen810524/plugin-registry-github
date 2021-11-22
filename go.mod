@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/bool64/ctxd v1.0.0
 	github.com/google/go-github/v35 v35.3.0
-	github.com/nhatthm/aferoassert v0.1.5
+	github.com/nhatthm/aferoassert v0.1.6
 	github.com/nhatthm/aferomock v0.3.0
 	github.com/nhatthm/httpmock v0.6.3
 	github.com/nhatthm/plugin-registry v0.2.0
@@ -29,5 +29,5 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
-	golang.org/x/text v0.3.6 // indirect
+	golang.org/x/text v0.3.7 // indirect
 )
