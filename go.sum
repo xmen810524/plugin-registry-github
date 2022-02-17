@@ -39,8 +39,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/bool64/ctxd v1.0.0/go.mod h1:+rjDVFNOJeO+xlvMqQfG0p53CzuRB7FhPSo5nWSkpQ0=
-github.com/bool64/ctxd v1.0.1 h1:2tw+xEvvLK1A94VBgJcoGi5gYF2hEvVBFyXX2AMClcE=
-github.com/bool64/ctxd v1.0.1/go.mod h1:Nwjh+GmLrSqKpPSA2e5uhcryN8vIpJyKCnC5MU8TiYE=
+github.com/bool64/ctxd v1.1.0 h1:x/Iw9zZ7w7XEL//eDVXS5C4mVaSmHhOtFjujIAENxd0=
+github.com/bool64/ctxd v1.1.0/go.mod h1:Nwjh+GmLrSqKpPSA2e5uhcryN8vIpJyKCnC5MU8TiYE=
 github.com/bool64/dev v0.1.25/go.mod h1:cTHiTDNc8EewrQPy3p1obNilpMpdmlUesDkFTF2zRWU=
 github.com/bool64/dev v0.1.28/go.mod h1:cTHiTDNc8EewrQPy3p1obNilpMpdmlUesDkFTF2zRWU=
 github.com/bool64/dev v0.1.41/go.mod h1:cTHiTDNc8EewrQPy3p1obNilpMpdmlUesDkFTF2zRWU=
