@@ -3,7 +3,7 @@ module github.com/nhatthm/plugin-registry-github
 go 1.17
 
 require (
-	github.com/bool64/ctxd v1.1.0
+	github.com/bool64/ctxd v1.1.2
 	github.com/google/go-github/v35 v35.3.0
 	github.com/nhatthm/aferoassert v0.1.6
 	github.com/nhatthm/aferomock v0.3.1
