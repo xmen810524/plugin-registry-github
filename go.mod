@@ -11,7 +11,7 @@ require (
 	github.com/nhatthm/plugin-registry v0.2.1
 	github.com/nhatthm/plugin-registry-fs v0.2.1
 	github.com/spf13/afero v1.8.2
-	github.com/stretchr/testify v1.7.4
+	github.com/stretchr/testify v1.7.5
 	gopkg.in/yaml.v3 v3.0.1
 )
 
