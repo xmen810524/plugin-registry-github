@@ -11,7 +11,7 @@ require (
 	github.com/nhatthm/plugin-registry v0.2.1
 	github.com/nhatthm/plugin-registry-fs v0.2.1
 	github.com/spf13/afero v1.9.2
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -24,7 +24,7 @@ require (
 	github.com/nhatthm/aferocopy v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/stretchr/objx v0.4.0 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/swaggest/assertjson v1.7.0 // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
