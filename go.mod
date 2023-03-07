@@ -10,7 +10,7 @@ require (
 	github.com/nhatthm/httpmock v0.8.0
 	github.com/nhatthm/plugin-registry v0.2.1
 	github.com/nhatthm/plugin-registry-fs v0.2.1
-	github.com/spf13/afero v1.9.2
+	github.com/spf13/afero v1.9.5
 	github.com/stretchr/testify v1.8.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -29,6 +29,6 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	go.nhat.io/matcher/v2 v2.0.0 // indirect
-	golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871 // indirect
+	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
